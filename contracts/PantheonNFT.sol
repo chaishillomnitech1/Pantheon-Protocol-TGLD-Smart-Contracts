@@ -165,10 +165,20 @@ contract PantheonNFT is ERC721, ERC721URIStorage, ERC2981, AccessControl {
         return super.supportsInterface(interfaceId);
     }
 
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
-        super._burn(tokenId);
-        _resetTokenRoyalty(tokenId);
-        delete _legacyData[tokenId];
+    function _update(address to, uint256 tokenId, address auth)
+        internal
+        override(ERC721)
+        returns (address)
+    {
+        address previousOwner = super._update(to, tokenId, auth);
+        
+        // If burning (to == address(0)), clean up data
+        if (to == address(0)) {
+            _resetTokenRoyalty(tokenId);
+            delete _legacyData[tokenId];
+        }
+        
+        return previousOwner;
     }
 
     /**

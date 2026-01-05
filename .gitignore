@@ -9,6 +9,9 @@ typechain-types
 cache
 artifacts
 
+# Build files
+build
+
 # npm
 package-lock.json
 
