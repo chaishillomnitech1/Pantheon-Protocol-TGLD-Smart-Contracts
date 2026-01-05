@@ -133,7 +133,7 @@ contract PantheonNFT is ERC721, ERC721URIStorage, ERC2981, AccessControl {
      * @return Legacy metadata struct
      */
     function getLegacyMetadata(uint256 tokenId) public view returns (LegacyMetadata memory) {
-        require(_exists(tokenId), "PantheonNFT: Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "PantheonNFT: Token does not exist");
         return _legacyData[tokenId];
     }
 
@@ -179,12 +179,5 @@ contract PantheonNFT is ERC721, ERC721URIStorage, ERC2981, AccessControl {
         }
         
         return previousOwner;
-    }
-
-    /**
-     * @dev Internal function to check token existence
-     */
-    function _exists(uint256 tokenId) internal view returns (bool) {
-        return _ownerOf(tokenId) != address(0);
     }
 }
